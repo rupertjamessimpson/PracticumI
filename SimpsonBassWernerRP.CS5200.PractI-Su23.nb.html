@@ -1757,13 +1757,13 @@ display: none;
 <h2>Connect to Database</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShSTXlTUUwpXG5cbmhvc3QgPC0gXCJzcWw5LmZyZWVteXNxbGhvc3RpbmcubmV0XCJcbnVzZXJuYW1lIDwtIFwic3FsOTYyNzU3NFwiXG5wYXNzd29yZCA8LSBcIm1ZV1JmMlNNcTJcIlxuZGJuYW1lIDwtIFwic3FsOTYyNzU3NFwiXG5cbmRiY29uIDwtIGRiQ29ubmVjdChcbiAgTXlTUUwoKSxcbiAgdXNlciA9IHVzZXJuYW1lLFxuICBwYXNzd29yZCA9IHBhc3N3b3JkLFxuICBkYm5hbWUgPSBkYm5hbWUsXG4gIGhvc3QgPSBob3N0XG4pXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShSTXlTUUwpXG5cbmhvc3QgPC0gXCJzcWw5LmZyZWVteXNxbGhvc3RpbmcubmV0XCJcbnVzZXJuYW1lIDwtIFwic3FsOTYyNzU4NVwiXG5wYXNzd29yZCA8LSBcIjJKVVhsSUVrMzlcIlxuZGJuYW1lIDwtIFwic3FsOTYyNzU4NVwiXG5cbmRiY29uIDwtIGRiQ29ubmVjdChcbiAgTXlTUUwoKSxcbiAgdXNlciA9IHVzZXJuYW1lLFxuICBwYXNzd29yZCA9IHBhc3N3b3JkLFxuICBkYm5hbWUgPSBkYm5hbWUsXG4gIGhvc3QgPSBob3N0XG4pXG5gYGAifQ== -->
 <pre class="r"><code>library(RMySQL)
 
 host &lt;- &quot;sql9.freemysqlhosting.net&quot;
-username &lt;- &quot;sql9627574&quot;
-password &lt;- &quot;mYWRf2SMq2&quot;
-dbname &lt;- &quot;sql9627574&quot;
+username &lt;- &quot;sql9627585&quot;
+password &lt;- &quot;2JUXlIEk39&quot;
+dbname &lt;- &quot;sql9627585&quot;
 
 dbcon &lt;- dbConnect(
   MySQL(),
@@ -1780,6 +1780,57 @@ dbcon &lt;- dbConnect(
 <h2>Create Database</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgc3FsXG5DUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBhaXJwb3J0cyAoXG4gIGFpZCBJTlQgUFJJTUFSWSBLRVkgQVVUT19JTkNSRU1FTlQsXG4gIGFpcnBvcnRTdGF0ZSBURVhULFxuICBhaXJwb3J0Q29kZSBURVhUXG4pO1xuYGBgIn0= -->
+<pre class="sql"><code>CREATE TABLE IF NOT EXISTS airports (
+  aid INT PRIMARY KEY AUTO_INCREMENT,
+  airportState TEXT,
+  airportCode TEXT
+);</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgc3FsXG5DUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBmbGlnaHRzIChcbiAgZmlkIElOVCBQUklNQVJZIEtFWSxcbiAgZGF0ZSBEQVRFLFxuICBvcmlnaW4gSU5ULFxuICBhaXJsaW5lIFRFWFQsXG4gIGFpcmNyYWZ0IFRFWFQsXG4gIGFsdGl0dWRlIElOVCxcbiAgaGVhdnkgQk9PTEVBTixcbiAgRk9SRUlHTiBLRVkgKG9yaWdpbikgUkVGRVJFTkNFUyBhaXJwb3J0cyhhaWQpXG4pO1xuYGBgIn0= -->
+<pre class="sql"><code>CREATE TABLE IF NOT EXISTS flights (
+  fid INT PRIMARY KEY,
+  date DATE,
+  origin INT,
+  airline TEXT,
+  aircraft TEXT,
+  altitude INT,
+  heavy BOOLEAN,
+  FOREIGN KEY (origin) REFERENCES airports(aid)
+);</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgc3FsXG5DUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBjb25kaXRpb25zIChcbiAgY2lkIElOVCBQUklNQVJZIEtFWSxcbiAgc2t5X2NvbmRpdGlvbiBURVhULFxuICBleHBsYW5hdGlvbiBURVhUXG4pO1xuYGBgIn0= -->
+<pre class="sql"><code>CREATE TABLE IF NOT EXISTS conditions (
+  cid INT PRIMARY KEY,
+  sky_condition TEXT,
+  explanation TEXT
+);</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgc3FsXG5DUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBzdHJpa2VzIChcbiAgc2lkIElOVCBQUklNQVJZIEtFWSBBVVRPX0lOQ1JFTUVOVCxcbiAgZmlkIElOVCxcbiAgbnVtYmlyZHMgSU5ULFxuICBpbXBhY3QgVEVYVCxcbiAgZGFtYWdlIEJPT0xFQU4sXG4gIGFsdGl0dWRlIElOVCBDSEVDSyAoYWx0aXR1ZGUgPj0gMCksXG4gIGNvbmRpdGlvbnMgSU5ULFxuICBGT1JFSUdOIEtFWSAoY29uZGl0aW9ucykgUkVGRVJFTkNFUyBjb25kaXRpb25zKGNpZCksXG4gIEZPUkVJR04gS0VZIChmaWQpIFJFRkVSRU5DRVMgZmxpZ2h0cyhmaWQpXG4pO1xuYGBgIn0= -->
+<pre class="sql"><code>CREATE TABLE IF NOT EXISTS strikes (
+  sid INT PRIMARY KEY AUTO_INCREMENT,
+  fid INT,
+  numbirds INT,
+  impact TEXT,
+  damage BOOLEAN,
+  altitude INT CHECK (altitude &gt;= 0),
+  conditions INT,
+  FOREIGN KEY (conditions) REFERENCES conditions(cid),
+  FOREIGN KEY (fid) REFERENCES flights(fid)
+);</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -1790,10 +1841,13 @@ dbcon &lt;- dbConnect(
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGJEaXNjb25uZWN0KGRiY29uKVxuYGBgIn0= -->
 <pre class="r"><code>dbDisconnect(dbcon)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFRSVUVcbiJ9 -->
+<pre><code>[1] TRUE</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUHJhY3RpY3VtIEkgQ1M1MjAwIgphdXRob3JzOiAiUnVwZXJ0IFNpbXBzb24sIFBhdWxhIEJhc3MgV2VybmVyIgpkYXRlOiAiU3VtbWVyIEZ1bGwgMjAyMyIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKIyMgQ29ubmVjdCB0byBEYXRhYmFzZQoKYGBge3IgQ29ubmVjdFRvRGF0YWJhc2UsIGV2YWwgPSBULCB3YXJuaW5nID0gRn0KbGlicmFyeShSTXlTUUwpCgpob3N0IDwtICJzcWw5LmZyZWVteXNxbGhvc3RpbmcubmV0Igp1c2VybmFtZSA8LSAic3FsOTYyNzU3NCIKcGFzc3dvcmQgPC0gIm1ZV1JmMlNNcTIiCmRibmFtZSA8LSAic3FsOTYyNzU3NCIKCmRiY29uIDwtIGRiQ29ubmVjdCgKICBNeVNRTCgpLAogIHVzZXIgPSB1c2VybmFtZSwKICBwYXNzd29yZCA9IHBhc3N3b3JkLAogIGRibmFtZSA9IGRibmFtZSwKICBob3N0ID0gaG9zdAopCmBgYAoKIyMgQ3JlYXRlIERhdGFiYXNlCgpgYGB7c3FsIENyZWF0ZURhdGFiYXNlLCBjb25uZWN0aW9uPWRiY29ufQoKYGBgCgojIyBEaXNjb25uZWN0IEZyb20gRGF0YWJhc2UKCmBgYHtyfQpkYkRpc2Nvbm5lY3QoZGJjb24pCmBgYA==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUHJhY3RpY3VtIEkgQ1M1MjAwIgphdXRob3JzOiAiUnVwZXJ0IFNpbXBzb24sIFBhdWxhIEJhc3MgV2VybmVyIgpkYXRlOiAiU3VtbWVyIEZ1bGwgMjAyMyIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKIyMgQ29ubmVjdCB0byBEYXRhYmFzZQoKYGBge3IgQ29ubmVjdFRvRGF0YWJhc2UsIGV2YWwgPSBULCB3YXJuaW5nID0gRn0KbGlicmFyeShSTXlTUUwpCgpob3N0IDwtICJzcWw5LmZyZWVteXNxbGhvc3RpbmcubmV0Igp1c2VybmFtZSA8LSAic3FsOTYyNzU4NSIKcGFzc3dvcmQgPC0gIjJKVVhsSUVrMzkiCmRibmFtZSA8LSAic3FsOTYyNzU4NSIKCmRiY29uIDwtIGRiQ29ubmVjdCgKICBNeVNRTCgpLAogIHVzZXIgPSB1c2VybmFtZSwKICBwYXNzd29yZCA9IHBhc3N3b3JkLAogIGRibmFtZSA9IGRibmFtZSwKICBob3N0ID0gaG9zdAopCmBgYAoKIyMgQ3JlYXRlIERhdGFiYXNlCgpgYGB7c3FsIENyZWF0ZUFpcnBvcnRzVGFibGUsIGNvbm5lY3Rpb249ZGJjb259CkNSRUFURSBUQUJMRSBJRiBOT1QgRVhJU1RTIGFpcnBvcnRzICgKICBhaWQgSU5UIFBSSU1BUlkgS0VZIEFVVE9fSU5DUkVNRU5ULAogIGFpcnBvcnRTdGF0ZSBURVhULAogIGFpcnBvcnRDb2RlIFRFWFQKKTsKYGBgCgpgYGB7c3FsIENyZWF0ZUZsaWdodFRhYmxlLCBjb25uZWN0aW9uPWRiY29ufQpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBmbGlnaHRzICgKICBmaWQgSU5UIFBSSU1BUlkgS0VZLAogIGRhdGUgREFURSwKICBvcmlnaW4gSU5ULAogIGFpcmxpbmUgVEVYVCwKICBhaXJjcmFmdCBURVhULAogIGFsdGl0dWRlIElOVCwKICBoZWF2eSBCT09MRUFOLAogIEZPUkVJR04gS0VZIChvcmlnaW4pIFJFRkVSRU5DRVMgYWlycG9ydHMoYWlkKQopOwpgYGAKCmBgYHtzcWwgQ3JlYXRlQ29uZGl0aW9uc1RhYmxlLCBjb25uZWN0aW9uPWRiY29ufQpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBjb25kaXRpb25zICgKICBjaWQgSU5UIFBSSU1BUlkgS0VZLAogIHNreV9jb25kaXRpb24gVEVYVCwKICBleHBsYW5hdGlvbiBURVhUCik7CmBgYAoKYGBge3NxbCBDcmVhdGVTdHJpa2VzVGFibGUsIGNvbm5lY3Rpb249ZGJjb259CkNSRUFURSBUQUJMRSBJRiBOT1QgRVhJU1RTIHN0cmlrZXMgKAogIHNpZCBJTlQgUFJJTUFSWSBLRVkgQVVUT19JTkNSRU1FTlQsCiAgZmlkIElOVCwKICBudW1iaXJkcyBJTlQsCiAgaW1wYWN0IFRFWFQsCiAgZGFtYWdlIEJPT0xFQU4sCiAgYWx0aXR1ZGUgSU5UIENIRUNLIChhbHRpdHVkZSA+PSAwKSwKICBjb25kaXRpb25zIElOVCwKICBGT1JFSUdOIEtFWSAoY29uZGl0aW9ucykgUkVGRVJFTkNFUyBjb25kaXRpb25zKGNpZCksCiAgRk9SRUlHTiBLRVkgKGZpZCkgUkVGRVJFTkNFUyBmbGlnaHRzKGZpZCkKKTsKYGBgCgojIyBEaXNjb25uZWN0IEZyb20gRGF0YWJhc2UKCmBgYHtyfQpkYkRpc2Nvbm5lY3QoZGJjb24pCmBgYA==</div>
 
 
 

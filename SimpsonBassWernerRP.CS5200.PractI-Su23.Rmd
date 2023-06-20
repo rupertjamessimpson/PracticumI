@@ -11,9 +11,9 @@ output: html_notebook
 library(RMySQL)
 
 host <- "sql9.freemysqlhosting.net"
-username <- "sql9627574"
-password <- "mYWRf2SMq2"
-dbname <- "sql9627574"
+username <- "sql9627585"
+password <- "2JUXlIEk39"
+dbname <- "sql9627585"
 
 dbcon <- dbConnect(
   MySQL(),
@@ -26,8 +26,47 @@ dbcon <- dbConnect(
 
 ## Create Database
 
-```{sql CreateDatabase, connection=dbcon}
+```{sql CreateAirportsTable, connection=dbcon}
+CREATE TABLE IF NOT EXISTS airports (
+  aid INT PRIMARY KEY AUTO_INCREMENT,
+  airportState TEXT,
+  airportCode TEXT
+);
+```
 
+```{sql CreateFlightTable, connection=dbcon}
+CREATE TABLE IF NOT EXISTS flights (
+  fid INT PRIMARY KEY,
+  date DATE,
+  origin INT,
+  airline TEXT,
+  aircraft TEXT,
+  altitude INT,
+  heavy BOOLEAN,
+  FOREIGN KEY (origin) REFERENCES airports(aid)
+);
+```
+
+```{sql CreateConditionsTable, connection=dbcon}
+CREATE TABLE IF NOT EXISTS conditions (
+  cid INT PRIMARY KEY,
+  sky_condition TEXT,
+  explanation TEXT
+);
+```
+
+```{sql CreateStrikesTable, connection=dbcon}
+CREATE TABLE IF NOT EXISTS strikes (
+  sid INT PRIMARY KEY AUTO_INCREMENT,
+  fid INT,
+  numbirds INT,
+  impact TEXT,
+  damage BOOLEAN,
+  altitude INT CHECK (altitude >= 0),
+  conditions INT,
+  FOREIGN KEY (conditions) REFERENCES conditions(cid),
+  FOREIGN KEY (fid) REFERENCES flights(fid)
+);
 ```
 
 ## Disconnect From Database
