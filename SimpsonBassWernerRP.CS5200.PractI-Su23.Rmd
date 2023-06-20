@@ -6,3 +6,32 @@ output: html_notebook
 ---
 
 ## Connect to Database
+
+```{r ConnectToDatabase, eval = T, warning = F}
+library(RMySQL)
+
+host <- "sql9.freemysqlhosting.net"
+username <- "sql9627574"
+password <- "mYWRf2SMq2"
+dbname <- "sql9627574"
+
+dbcon <- dbConnect(
+  MySQL(),
+  user = username,
+  password = password,
+  dbname = dbname,
+  host = host
+)
+```
+
+## Create Database
+
+```{sql CreateDatabase, connection=dbcon}
+
+```
+
+## Disconnect From Database
+
+```{r}
+dbDisconnect(dbcon)
+```
