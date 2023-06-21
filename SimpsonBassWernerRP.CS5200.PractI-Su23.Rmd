@@ -69,6 +69,72 @@ CREATE TABLE IF NOT EXISTS strikes (
 );
 ```
 
+
+
+```{sql airportsTableInsertTest, connection=dbcon, eval=F}
+INSERT INTO airports (airportState, airportCode)
+VALUES ('California', 'LAX');
+```
+
+```{sql airportsTableOutputTest, connection=dbcon, eval=F}
+SELECT * FROM airports;
+```
+
+```{sql flightsTableInsertTest, connection=dbcon, eval=F}
+INSERT INTO flights (fid, date, origin, airline, aircraft, altitude, heavy)
+VALUES (1, '2023-06-21', 1, 'Delta', 'Boeing 737', 35000, 1);
+```
+
+```{sql flightsTableOutputTest, connection=dbcon, eval=F}
+SELECT * FROM flights;
+```
+
+```{sql conditionsTableInsertTest, connection=dbcon, eval=F}
+INSERT INTO conditions (cid, sky_condition, explanation)
+VALUES (1, 'Clear', 'No clouds in the sky.');
+```
+
+```{sql conditionsTableOutputTest, connection=dbcon, eval=F}
+SELECT * FROM conditions;
+```
+
+```{sql strikesTableInsertTest, connection=dbcon, eval=F}
+INSERT INTO strikes (fid, numbirds, impact, damage, altitude, conditions)
+VALUES (1, 2, 'Engine failure', true, 30000, 1);
+```
+
+```{sql strikesTableOutputTest, connection=dbcon, eval=F}
+SELECT * FROM strikes;
+```
+
+```{sql strikesTableReset, connection=dbcon, eval=F}
+DELETE FROM strikes;
+```
+
+```{sql flightsTableReset, connection=dbcon, eval=F}
+DELETE FROM flights;
+```
+
+```{sql airportsTableReset, connection=dbcon, eval=F}
+DELETE FROM airports;
+```
+
+```{sql conditionsTableReset, connection=dbcon, eval=F}
+DELETE FROM conditions;
+```
+
+```{sql connection=dbcon, eval=F}
+ALTER TABLE airports AUTO_INCREMENT = 1;
+```
+
+```{sql airportPrimaryKeyReset, connection=dbcon, eval=F}
+ALTER TABLE strikes AUTO_INCREMENT = 1;
+```
+
+```{sql strikesPrimaryKeyReset, connection=dbcon, eval=F}
+ALTER TABLE strikes AUTO_INCREMENT = 1;
+```
+
 ## Disconnect From Database
 
 ```{r}
