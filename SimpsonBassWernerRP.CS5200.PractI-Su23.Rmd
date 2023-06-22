@@ -107,32 +107,99 @@ VALUES (1, 2, 'Engine failure', true, 30000, 1);
 SELECT * FROM strikes;
 ```
 
-```{sql strikesTableReset, connection=dbcon, eval=F}
+```{sql strikesTableReset, connection=dbcon, eval=T}
 DELETE FROM strikes;
 ```
 
-```{sql flightsTableReset, connection=dbcon, eval=F}
+```{sql flightsTableReset, connection=dbcon, eval=T}
 DELETE FROM flights;
 ```
 
-```{sql airportsTableReset, connection=dbcon, eval=F}
+```{sql airportsTableReset, connection=dbcon, eval=T}
 DELETE FROM airports;
 ```
 
-```{sql conditionsTableReset, connection=dbcon, eval=F}
+```{sql conditionsTableReset, connection=dbcon, eval=T}
 DELETE FROM conditions;
 ```
 
-```{sql connection=dbcon, eval=F}
+```{sql connection=dbcon, eval=T}
 ALTER TABLE airports AUTO_INCREMENT = 1;
 ```
 
-```{sql airportPrimaryKeyReset, connection=dbcon, eval=F}
+```{sql strikesPrimaryKeyReset, connection=dbcon, eval=T}
 ALTER TABLE strikes AUTO_INCREMENT = 1;
 ```
 
-```{sql strikesPrimaryKeyReset, connection=dbcon, eval=F}
-ALTER TABLE strikes AUTO_INCREMENT = 1;
+## Create Dataframe
+
+```{r CreateDataframe, eval = T, warning = F}
+bds.raw <- read.csv('BirdStrikesData.csv')
+
+csvData <- head(bds.raw, 100)
+```
+
+```{r populateAirportsTable, eval = T, warning = F}
+for (row in 1:nrow(datasubset)) {
+  # airports table information
+  airportState <- csvData[row, "origin"]
+  
+  # flights table information
+  rid <- csvData[row, "rid"]
+  date_string <- csvData[row, "flight_date"]
+  date_object <- strptime(date_string, format = "%m/%d/%Y %H:%M")
+  date <- format(date_object, format = "%Y-%m-%d")
+  origin <- row
+  airline <- csvData[row, "airline"]
+  aircraft <- csvData[row, "aircraft"]
+  altitude <- as.integer(gsub(",", "", csvData[row, "altitude_ft"]))
+  damage <- csvData[row, "damage"]
+  heavy <- 0
+  if (damage == "Caused damage") {
+    heavy <- 1
+  }
+  
+  #strikes table information
+  numbirds <- as.integer(csvData[row, "wildlife_struck"])
+  impact <- csvData[row, "impact"]
+  
+  # conditions table information
+  sky_condition <- csvData[row, "sky_conditions"]
+  
+  # Insert row information into airports table
+  airports_insert_query <- sprintf("INSERT INTO airports (airportState) VALUES ('%s')", airportState)
+  dbExecute(dbcon, airports_insert_query)
+  
+  # Insert row information into flights table
+  flights_insert_query <- sprintf("INSERT INTO flights (fid, date, origin, airline, aircraft, altitude, heavy) 
+                                  VALUES (%d, DATE('%s'), %d, '%s', '%s', %d, %d)", rid, date, origin, airline, aircraft, altitude, heavy)
+  dbExecute(dbcon, flights_insert_query)
+  
+  # Insert row information into conditions table
+  conditions_insert_query <- sprintf("INSERT INTO conditions (cid, sky_condition) VALUES (%d, '%s')", rid, sky_condition)
+  dbExecute(dbcon, conditions_insert_query)
+  
+  # Insert row information into strikes table
+  strikes_insert_query <- sprintf("INSERT INTO strikes (fid, numbirds, impact, damage, altitude, conditions) 
+                                  VALUES (%d, %d, '%s', %d, %d, %d)", rid, numbirds, impact, heavy, altitude, rid)
+  dbExecute(dbcon, strikes_insert_query)
+}
+```
+
+```{sql testStrikesData, connection=dbcon, eval=T}
+SELECT * FROM strikes;
+```
+
+```{sql testFlightsData, connection=dbcon, eval=T}
+SELECT * FROM flights;
+```
+
+```{sql testAirportsData, connection=dbcon, eval=T}
+SELECT * FROM airports;
+```
+
+```{sql testConditionsData, connection=dbcon, eval=T}
+SELECT * FROM conditions;
 ```
 
 ## Disconnect From Database
