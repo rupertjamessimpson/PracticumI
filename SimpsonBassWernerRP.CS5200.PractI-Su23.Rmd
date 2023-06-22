@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS strikes (
 );
 ```
 
-
+## Manually Test Inserting Into Tables
 
 ```{sql airportsTableInsertTest, connection=dbcon, eval=F}
 INSERT INTO airports (airportState, airportCode)
@@ -106,6 +106,8 @@ VALUES (1, 2, 'Engine failure', true, 30000, 1);
 ```{sql strikesTableOutputTest, connection=dbcon, eval=F}
 SELECT * FROM strikes;
 ```
+
+## Clean Data in Preparation for 
 
 ```{sql strikesTableReset, connection=dbcon, eval=T}
 DELETE FROM strikes;
@@ -151,6 +153,9 @@ for (row in 1:nrow(datasubset)) {
   date <- format(date_object, format = "%Y-%m-%d")
   origin <- row
   airline <- csvData[row, "airline"]
+  if (airline == "") {
+    airline <- "unknown"
+  }
   aircraft <- csvData[row, "aircraft"]
   altitude <- as.integer(gsub(",", "", csvData[row, "altitude_ft"]))
   damage <- csvData[row, "damage"]
@@ -200,6 +205,50 @@ SELECT * FROM airports;
 
 ```{sql testConditionsData, connection=dbcon, eval=T}
 SELECT * FROM conditions;
+```
+
+## Query For Question 8
+
+```{sql question8query, connection=dbcon, eval=T}
+SELECT airportState AS state, COUNT(*) AS incidents
+FROM strikes
+JOIN flights ON strikes.fid = flights.fid
+JOIN airports ON flights.origin = airports.aid
+GROUP BY airportState
+ORDER BY incidents DESC
+LIMIT 10;
+```
+
+## Query For Question 9
+
+```{sql question9query, connection=dbcon, eval=T}
+SELECT airline, COUNT(*) AS incidents
+FROM strikes
+JOIN flights ON strikes.fid = flights.fid
+JOIN airports ON flights.origin = airports.aid
+GROUP BY airline
+HAVING incidents > (SELECT AVG(incident_count) FROM (SELECT COUNT(*) AS incident_count FROM strikes JOIN flights ON strikes.fid = flights.fid GROUP BY airline) AS avg_counts)
+ORDER BY incidents DESC;
+```
+
+## Query For Question 10
+
+```{r question10query, eval = T, warning = F}
+library(DBI)
+
+query <- "
+  SELECT DATE_FORMAT(date, '%Y-%m') AS month, SUM(numbirds) AS total_birds
+  FROM strikes
+  JOIN flights ON strikes.fid = flights.fid
+  GROUP BY month
+  ORDER BY month;
+"
+
+result <- dbGetQuery(dbcon, query)
+
+df <- as.data.frame(result)
+
+head(df, 6)
 ```
 
 ## Disconnect From Database
