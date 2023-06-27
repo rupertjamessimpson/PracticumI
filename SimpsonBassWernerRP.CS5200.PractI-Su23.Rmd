@@ -11,9 +11,9 @@ output: html_notebook
 library(RMySQL)
 
 host <- "sql9.freemysqlhosting.net"
-username <- "sql9627585"
-password <- "2JUXlIEk39"
-dbname <- "sql9627585"
+username <- "sql9629158"
+password <- "bXbHzkNEwi"
+dbname <- "sql9629158"
 
 dbcon <- dbConnect(
   MySQL(),
@@ -209,7 +209,7 @@ SELECT * FROM conditions;
 
 ## Query For Question 8
 
-```{sql question8query, connection=dbcon, eval=T}
+```{sql question8, connection=dbcon, eval=T}
 SELECT airportState AS state, COUNT(*) AS incidents
 FROM strikes
 JOIN flights ON strikes.fid = flights.fid
@@ -221,7 +221,7 @@ LIMIT 10;
 
 ## Query For Question 9
 
-```{sql question9query, connection=dbcon, eval=T}
+```{sql question9, connection=dbcon, eval=T}
 SELECT airline, COUNT(*) AS incidents
 FROM strikes
 JOIN flights ON strikes.fid = flights.fid
@@ -233,22 +233,43 @@ ORDER BY incidents DESC;
 
 ## Query For Question 10
 
-```{r question10query, eval = T, warning = F}
+```{r question10, eval = T, warning = F}
 library(DBI)
 
-query <- "
-  SELECT DATE_FORMAT(date, '%Y-%m') AS month, SUM(numbirds) AS total_birds
+query <- "SELECT DATE_FORMAT(date, '%Y-%m') AS month, SUM(numbirds) AS total_birds
   FROM strikes
   JOIN flights ON strikes.fid = flights.fid
   GROUP BY month
-  ORDER BY month;
-"
+  ORDER BY month;"
 
 result <- dbGetQuery(dbcon, query)
 
 df <- as.data.frame(result)
 
 head(df, 6)
+```
+
+## Data Graph For Question 11
+
+```{r question11, eval = T, warning = F}
+# Create a column chart
+barplot(df$total_birds, names.arg = df$month, xlab = "Month", ylab = "Number of Birds",
+        main = "Bird Strikes per Month", col = "blue", ylim = c(0, max(df$total_birds)))
+
+# Add data labels
+text(x = 1:length(df$total_birds), y = df$total_birds, labels = df$total_birds, pos = 3, cex = 0.8)
+
+# Add a legend
+legend("topright", legend = c("Number of Birds"), fill = "blue")
+
+# Adjust the plot margins
+par(mar = c(5, 4, 4, 2) + 0.1)
+```
+
+## Stored Procedure for Question 12
+
+```{r question12, eval = T, warning = F}
+
 ```
 
 ## Disconnect From Database
