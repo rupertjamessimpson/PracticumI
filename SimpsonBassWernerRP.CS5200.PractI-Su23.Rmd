@@ -268,8 +268,46 @@ par(mar = c(5, 4, 4, 2) + 0.1)
 
 ## Stored Procedure for Question 12
 
-```{r question12, eval = T, warning = F}
+```{sql question12reset, connection=dbcon, eval=T}
+DROP PROCEDURE IF EXISTS AddNewStrike;
+```
 
+```{sql question12, connection=dbcon, eval=T}
+CREATE PROCEDURE AddNewStrike(
+  IN fid INT,
+  IN numbirds INT,
+  IN impact TEXT,
+  IN damage BOOLEAN,
+  IN altitude INT,
+  IN cid INT
+)
+BEGIN
+
+  INSERT INTO strikes (fid, numbirds, impact, damage, altitude, conditions)
+  VALUES (fid, numbirds, impact, damage, altitude, cid);
+END;
+```
+
+```{r question12results, eval = T, warning = F}
+query <- "CALL AddNewStrike(
+  4064,
+  10,
+  'wing',
+  0,
+  5000,
+  4064
+)"
+
+dbGetQuery(dbcon, query)
+
+check <- "SELECT *
+FROM strikes
+ORDER BY sid DESC
+LIMIT 1;"
+
+result <- dbGetQuery(dbcon, check)
+
+print(result)
 ```
 
 ## Disconnect From Database
