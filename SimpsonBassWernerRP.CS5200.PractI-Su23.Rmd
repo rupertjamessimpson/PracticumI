@@ -136,40 +136,77 @@ ALTER TABLE strikes AUTO_INCREMENT = 1;
 ## Create Dataframe
 
 ```{r CreateDataframe, eval = T, warning = F}
-bds.raw <- read.csv('BirdStrikesData.csv')
-
-csvData <- head(bds.raw, 100)
+csvData <- read.csv('BirdStrikesData.csv')
 ```
 
 ```{r populateAirportsTable, eval = T, warning = F}
-for (row in 1:nrow(datasubset)) {
+for (row in 1:nrow(csvData)) {
+  
   # airports table information
   airportState <- csvData[row, "origin"]
+  if (airportState == "") {
+    airportState <- "N/A"
+  }
   
   # flights table information
   rid <- csvData[row, "rid"]
+  
   date_string <- csvData[row, "flight_date"]
-  date_object <- strptime(date_string, format = "%m/%d/%Y %H:%M")
-  date <- format(date_object, format = "%Y-%m-%d")
+  if (date_string == "") {
+    date <- "0000-00-00"
+  }
+  else {
+    date_object <- strptime(date_string, format = "%m/%d/%Y %H:%M")
+    date <- format(date_object, format = "%Y-%m-%d")
+  }
   origin <- row
+  
   airline <- csvData[row, "airline"]
   if (airline == "") {
     airline <- "unknown"
   }
+  
   aircraft <- csvData[row, "aircraft"]
-  altitude <- as.integer(gsub(",", "", csvData[row, "altitude_ft"]))
+  if (aircraft == "") {
+    aircraft <- "N/A"
+  }
+  
+  altitude <- csvData[row, "altitude_ft"]
+  if (altitude == "") {
+    altitude <- 0
+  } else {
+    altitude <- as.integer(gsub(",", "", csvData[row, "altitude_ft"]))
+  }
+  
   damage <- csvData[row, "damage"]
+  if (damage == "") {
+    damage <- "N/A"
+  }
+  
   heavy <- 0
   if (damage == "Caused damage") {
     heavy <- 1
   }
+  if (heavy == "") {
+    heavy <- 0
+  }
   
-  #strikes table information
+  # strikes table information
   numbirds <- as.integer(csvData[row, "wildlife_struck"])
+  if (numbirds == "") {
+    numbirds <- 0
+  }
+  
   impact <- csvData[row, "impact"]
+  if (impact == "") {
+    impact <- "N/A"
+  }
   
   # conditions table information
   sky_condition <- csvData[row, "sky_conditions"]
+  if (sky_condition == "") {
+    sky_condition <- "N/A"
+  }
   
   # Insert row information into airports table
   airports_insert_query <- sprintf("INSERT INTO airports (airportState) VALUES ('%s')", airportState)
@@ -289,6 +326,7 @@ END;
 ```
 
 ```{r question12results, eval = T, warning = F}
+# Call stored procedure
 query <- "CALL AddNewStrike(
   4064,
   10,
@@ -298,6 +336,7 @@ query <- "CALL AddNewStrike(
   4064
 )"
 
+# Envoke stored procedure
 dbGetQuery(dbcon, query)
 
 check <- "SELECT *
@@ -307,6 +346,7 @@ LIMIT 1;"
 
 result <- dbGetQuery(dbcon, check)
 
+# Print the row that would have been recently added
 print(result)
 ```
 
