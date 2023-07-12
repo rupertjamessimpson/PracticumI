@@ -135,11 +135,11 @@ ALTER TABLE strikes AUTO_INCREMENT = 1;
 
 ## Create Dataframe
 
-```{r CreateDataframe, eval = T, warning = F}
+```{r CreateDataframe, eval = F, warning = F}
 csvData <- read.csv('BirdStrikesData.csv')
 ```
 
-```{r populateAirportsTable, eval = T, warning = F}
+```{r populateAirportsTable, eval = F, warning = F}
 for (row in 1:nrow(csvData)) {
   
   # airports table information
