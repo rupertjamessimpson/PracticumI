@@ -1,0 +1,18 @@
+  if (length(get.flight.key(date, aircraft, get.airport.key(airportName, airportState, airports.df), flights.df)) == 0) {
+    flights.df[f.row, "fid"] <- as.integer(f.row)
+    flights.df[f.row, "date"] <- date
+    flights.df[f.row, "origin"] <- get.airport.key(airportName, airportState, airports.df)
+    flights.df[f.row, "airline"] <- airline
+    flights.df[f.row, "aircraft"] <- aircraft
+    flights.df[f.row, "heavy"] <- heavy
+    flights.df[f.row, "altitude"] <- altitude
+    f.row <- f.row + 1 # Increment p.row when a new genre is added
+  }
+  
+  dbcon <- dbConnect(
+  MySQL(),
+  dbname = dbname,
+  host = host,
+  user = username,
+  password = password,
+)
